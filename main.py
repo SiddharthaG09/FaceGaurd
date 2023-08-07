@@ -65,7 +65,7 @@ while True:
     if len(faces) == 0:
         attention_status = "Not Paying Attention"
         elapsed_time = (datetime.now() - last_attention_time).seconds
-        if elapsed_time >= 3 and is_attention_detected:
+        if elapsed_time >= 12 and is_attention_detected:
             alert_label.config(text="Please pay attention!", fg="red")
             root.deiconify()
             play_chime()
