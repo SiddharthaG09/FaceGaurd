@@ -143,9 +143,6 @@ while True:
     best_text = f"Best Attention: {int(best_attention_time.total_seconds())} seconds"
     cv2.putText(frame, best_text, (20, screen_height - 40), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
 
-    #total_text = f"Total Attention: {int(total_attention_time.total_seconds())} Milliseconds"
-    #cv2.putText(frame, total_text, (screen_width - 250, screen_height - 40), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
-
     cv2.putText(frame, attention_status, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
     cv2.imshow("Attention Detector", frame)
 
