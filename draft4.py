@@ -48,8 +48,9 @@ ear_history = []  # List to store recent EAR values for smoothing
 blink_counter = 0  # Counter for consecutive low EAR frames (potential blink)
 
 last_attention_time = datetime.now()
-start_attention_time = time.time()  # Initialize the start time
-is_attention_detected = True  # Set initial state to True
+start_attention_time = None  # Initialize the start time
+best_attention_time = 0  # Initialize the best attention time
+is_attention_detected = False  # Set initial state to False
 gui_visible = False  # Track whether the GUI is currently visible
 
 def play_chime():
@@ -137,6 +138,10 @@ while True:
                     gui_visible = True
                     is_attention_detected = False
                     start_attention_time = None  # Reset the start time
+
+    # Display the best attention time in the bottom left corner
+    best_text = f"Best Attention: {best_attention_time} seconds"
+    cv2.putText(frame, best_text, (20, screen_height - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
 
     cv2.putText(frame, attention_status, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
     cv2.imshow("Attention Detector", frame)
