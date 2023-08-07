@@ -4,7 +4,6 @@ import math
 import tkinter as tk
 from datetime import datetime, timedelta
 from playsound import playsound
-import time
 
 def calculate_ear(landmarks, eye_indices):
     # Calculate the Euclidean distances between the vertical eye landmarks
