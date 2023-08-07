@@ -2,7 +2,7 @@ import cv2
 import dlib
 import math
 import tkinter as tk
-from datetime import datetime
+from datetime import datetime, timedelta
 from playsound import playsound
 import time
 
@@ -49,7 +49,8 @@ blink_counter = 0  # Counter for consecutive low EAR frames (potential blink)
 
 last_attention_time = datetime.now()
 start_attention_time = None  # Initialize the start time
-best_attention_time = 0  # Initialize the best attention time
+best_attention_time = timedelta()  # Initialize the best attention time
+total_attention_time = timedelta()  # Initialize total attention time
 is_attention_detected = False  # Set initial state to False
 gui_visible = False  # Track whether the GUI is currently visible
 
@@ -106,10 +107,13 @@ while True:
 
                 # Display the timer if attention is detected
                 if start_attention_time is not None:
-                    current_time = time.time()
-                    elapsed_time = int(current_time - start_attention_time)
-                    timer_text = f"Attention Timer: {elapsed_time} seconds"
+                    current_time = datetime.now()
+                    elapsed_time = current_time - start_attention_time
+                    timer_text = f"Attention Timer: {elapsed_time.seconds} seconds"
                     cv2.putText(frame, timer_text, (screen_width - 300, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+
+                    # Update total attention time
+                    total_attention_time += elapsed_time
 
                 # Hide the GUI window if attention is detected
                 if gui_visible:
@@ -124,7 +128,7 @@ while True:
                 last_attention_time = datetime.now()  # Update the last attention time
                 if not is_attention_detected:
                     is_attention_detected = True
-                    start_attention_time = time.time()  # Set the start time
+                    start_attention_time = datetime.now()  # Set the start time
                     if gui_visible:
                         alert_label.config(text="")
                         root.withdraw()
@@ -140,8 +144,12 @@ while True:
                     start_attention_time = None  # Reset the start time
 
     # Display the best attention time in the bottom left corner
-    best_text = f"Best Attention: {best_attention_time} seconds"
-    cv2.putText(frame, best_text, (20, screen_height - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+    best_text = f"Best Attention: {best_attention_time.seconds} seconds"
+    cv2.putText(frame, best_text, (20, screen_height - 40), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+
+    # Display the total attention time in the bottom right corner
+    total_text = f"Total Attention: {total_attention_time.seconds} seconds"
+    cv2.putText(frame, total_text, (screen_width - 250, screen_height - 40), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
 
     cv2.putText(frame, attention_status, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
     cv2.imshow("Attention Detector", frame)
