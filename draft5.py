@@ -138,7 +138,7 @@ while True:
                         root.withdraw()
                         gui_visible = False
             else:
-                elapsed_time = (datetime.now() - last_attention_time).seconds
+                elapsed_time = (datetime.now() - last_attention_time).total_seconds()
                 if elapsed_time >= 15 and is_attention_detected:  # Adjusted to 3 seconds
                     alert_label.config(text="Please pay attention!", fg="red")
                     root.deiconify()  # Show the GUI window
